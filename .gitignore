@@ -7,6 +7,9 @@ lib-cov
 *.pid
 *.gz
 
+#vi files
+*.swp
+
 pids
 logs
 results
