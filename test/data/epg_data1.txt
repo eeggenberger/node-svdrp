@@ -1,0 +1,42 @@
+220 krserver SVDRP VideoDiskRecorder 2.2.0; Sat Nov 14 21:57:03 2015; UTF-8
+215-C C-1-1051-28724 arte
+215-E 27292 1447531500 3600 4E 1C
+215-T Nachbarschaftsgeschichten: Paris / Berlin
+215-S Erschütterung
+215-D Ein besiegtes, zerstörtes Land, das Ende des Kaiserreichs und der Beginn der Weimarer Republik: Berlin befindet sich 1918 in einer ähnlichen Situation wie Paris 1871. Und auch die deutsche Hauptstadt beweist im Anschluss eine außergewöhnliche Dynamik, erfindet neue Wohnformen der Moderne. Das Neue Bauen der 30er Jahre findet mit dem Nationalsozialismus ein jähes Ende. Hitler hegt eine wahre Hassliebe für Paris und versucht in Berlin, mit den gigantomanischen Plänen für die neue Welthauptstadt Germania das französische Vorbild zu übertreffen. Doch in der Nachkriegszeit erhält die geteilte Hauptstadt ein komplett anderes Gesicht.|Produziert in HD
+215-X 1 03 deu 16:9-BD
+215-X 2 03 deu deutsch
+215-X 2 48 mis franz. oder Audiodeskription
+215-X 2 03 mul Originalton
+215-X 2 03 fra französisch
+215-V 1447531500
+215-e
+215-E 27293 1447535100 3000 4E 1C
+215-T Die Mode der 90er Jahre
+215-S Dokumentation Frankreich 2014
+215-D "Die Mode der 90er Jahre" von Loïc Prigent lässt ein Mode-Jahrzehnt wiedererstehen, dessen vielfältiges Spektrum das kontroverse Lebensgefühl der damaligen Gesellschaft abbildete. In sechs Kapiteln beleuchtet die Dokumentation die Urwüchsigkeit des Grunge, das Diktat des Minimalismus, die vordergründige und allgegenwärtige Sexualität in der damaligen Mode, die Streetwear und ihren Dresscode, die Ästhetik der (un)kontrollierten Entgleisungen sowie Dekadenz und Kitsch des Bling-Bling in den 90ern.|Produziert in HD
+215-X 1 03 deu 16:9-BD
+215-X 2 03 deu deutsch
+215-X 2 48 mis franz. oder Audiodeskription
+215-X 2 03 mul Originalton
+215-X 2 03 fra französisch
+215-V 1447535100
+215-e
+215-c
+215-C C-1-1051-11100 Das Erste HD
+215-E 41983 1447534800 1800 4E 14
+215-T Tagesthemen
+215-S mit Wetter
+215-D Themen:|* Terror in Paris: Wohin führen die Spuren der Attentäter|* Wie reagiert Deutschland: Gespräch mit Außenminister Steinmeier|* Internationale Solidarität: Die Welt trauert mit Frankreich|Moderation: Thomas Roth|Produziert in HD
+215-G 20 21 80 81
+215-X 5 0B deu HD-Video
+215-X 2 03 deu stereo
+215-X 4 42 deu Dolby Digital 2.0
+215-X 3 01 deu 
+215-X 2 03 deu ohne Audiodeskription
+215-X 3 20 deu DVB-Untertitel
+215-V 1447539300
+215-e
+215-c
+215 End of EPG data
+221 krserver closing connection

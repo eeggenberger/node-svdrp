@@ -1,0 +1,44 @@
+{ 
+  "code" : "215", 
+  "data" : [
+    {
+      "channelId" : "C-1-1051-28724",
+      "channelName" : "arte",
+      "eventId" : 27292,
+      "start" : 1447531500,
+      "duration" : 3600,
+      "tableId" : "4E",
+      "version" : "1C",
+      "title" : "Nachbarschaftsgeschichten: Paris / Berlin",
+      "shortdesc" : "Erschütterung",
+      "description" : "Ein besiegtes, zerstörtes Land, das Ende des Kaiserreichs und der Beginn der Weimarer Republik: Berlin befindet sich 1918 in einer ähnlichen Situation wie Paris 1871. Und auch die deutsche Hauptstadt beweist im Anschluss eine außergewöhnliche Dynamik, erfindet neue Wohnformen der Moderne. Das Neue Bauen der 30er Jahre findet mit dem Nationalsozialismus ein jähes Ende. Hitler hegt eine wahre Hassliebe für Paris und versucht in Berlin, mit den gigantomanischen Plänen für die neue Welthauptstadt Germania das französische Vorbild zu übertreffen. Doch in der Nachkriegszeit erhält die geteilte Hauptstadt ein komplett anderes Gesicht.|Produziert in HD",
+      "vps" : 1447531500
+    },
+    {
+      "channelId" : "C-1-1051-28724",
+      "channelName" : "arte",
+      "eventId" : 27293,
+      "start" : 1447535100,
+      "duration" : 3000,
+      "tableId" : "4E",
+      "version" : "1C",
+      "title" : "Die Mode der 90er Jahre",
+      "shortdesc" : "Dokumentation Frankreich 2014",
+      "description" : "\"Die Mode der 90er Jahre\" von Loïc Prigent lässt ein Mode-Jahrzehnt wiedererstehen, dessen vielfältiges Spektrum das kontroverse Lebensgefühl der damaligen Gesellschaft abbildete. In sechs Kapiteln beleuchtet die Dokumentation die Urwüchsigkeit des Grunge, das Diktat des Minimalismus, die vordergründige und allgegenwärtige Sexualität in der damaligen Mode, die Streetwear und ihren Dresscode, die Ästhetik der (un)kontrollierten Entgleisungen sowie Dekadenz und Kitsch des Bling-Bling in den 90ern.|Produziert in HD",
+      "vps" : 1447535100
+    },
+    {
+      "channelId" : "C-1-1051-11100",
+      "channelName" : "Das Erste HD",
+      "eventId" : 41983,
+      "start" : 1447534800,
+      "duration" : 1800,
+      "tableId" : "4E",
+      "version" : "14",
+      "title" : "Tagesthemen",
+      "shortdesc" : "mit Wetter",
+      "description" : "Themen:|* Terror in Paris: Wohin führen die Spuren der Attentäter|* Wie reagiert Deutschland: Gespräch mit Außenminister Steinmeier|* Internationale Solidarität: Die Welt trauert mit Frankreich|Moderation: Thomas Roth|Produziert in HD",
+      "vps" : 1447539300
+    }
+  ]
+}

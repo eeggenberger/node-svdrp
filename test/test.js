@@ -3,6 +3,7 @@ var sinon = require('sinon');
 var net = require('net');
 var svdrpclient = require('../lib/svdrpclient.js');
 var EventEmitter = require('events').EventEmitter;
+var fs = require("fs");
 
 describe('svdrpclient base functions', function() {
 
@@ -144,8 +145,98 @@ describe('svdrpclient base functions', function() {
 
     });
 
-    it('should call LSTT with a timer id when passed an integer');
-    it('should call LSTT withthout a timer id when passed anything other than an integer');
+    it('should call LSTT with a timer id when passed an integer', function ( done ) {
+      var self = this;
+
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 11 23:12:52 2015; UTF-8\r\n" +
+        "250 1 1:22:2015-11-12:2225:2315:50:99:NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.12-22|30-Don:" +
+        "<epgsearch><channel>22 - zdf_neo</channel><searchtimer>neo magazin</searchtimer><start>1447363500" + 
+        "</start><stop>1447366500</stop><s-id>13</s-id><eventid>3411</eventid></epgsearch>\r\n" +
+        "221 krserver closing connection\r\n";
+
+      var response = { code: '250', data: [
+        {
+          id : 1,
+          status : 1,
+          channel : 22,
+          day : '2015-11-12',
+          start : 2225,
+          stop : 2315,
+          priority : 50,
+          lifetime : 99,
+          filename : 'NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.12-22|30-Don',
+          extinfo : '<epgsearch><channel>22 - zdf_neo</channel><searchtimer>neo magazin' +
+            '</searchtimer><start>1447363500</start><stop>1447366500</stop><s-id>13' +
+            '</s-id><eventid>3411</eventid></epgsearch>'
+        },
+        ]};
+
+      var client = new svdrpclient.svdrpclient();
+      client.listTimers( function( result ) {
+        assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal("LSTT 1\n", self.socketStub.args[0][0]);
+        done();
+        }, 1);
+    });
+
+    it('should call LSTT withthout a timer id when passed anything other than an integer', function ( done ) {
+      var self = this;
+
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 11 23:12:52 2015; UTF-8\r\n" +
+        "250 1 1:22:2015-11-12:2225:2315:50:99:NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.12-22|30-Don:" +
+        "<epgsearch><channel>22 - zdf_neo</channel><searchtimer>neo magazin</searchtimer><start>1447363500" + 
+        "</start><stop>1447366500</stop><s-id>13</s-id><eventid>3411</eventid></epgsearch>\r\n" +
+        "221 krserver closing connection\r\n";
+
+      var response = { code: '250', data: [
+        {
+          id : 1,
+          status : 1,
+          channel : 22,
+          day : '2015-11-12',
+          start : 2225,
+          stop : 2315,
+          priority : 50,
+          lifetime : 99,
+          filename : 'NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.12-22|30-Don',
+          extinfo : '<epgsearch><channel>22 - zdf_neo</channel><searchtimer>neo magazin' +
+            '</searchtimer><start>1447363500</start><stop>1447366500</stop><s-id>13' +
+            '</s-id><eventid>3411</eventid></epgsearch>'
+        },
+        ]};
+
+      var client = new svdrpclient.svdrpclient();
+      client.listTimers( function( result ) {
+        assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal("LSTT\n", self.socketStub.args[0][0]);
+        done();
+        }, 'abc');
+    });
+  });
+
+  describe('listEPG', function () {
+    it('should call LSTE without parameter and return an EPG struct', function ( done ) {
+      var self = this;
+
+      rawResponse = fs.readFileSync("test/data/epg_data1.txt");
+      //console.log( rawResponse.toString('utf8') );
+
+      var jsonData = fs.readFileSync("test/data/epg_result1.json");
+      //console.log( jsonData.toString('utf8') );
+      var response = JSON.parse(jsonData);
+      //console.log( response );
+
+      var client = new svdrpclient.svdrpclient();
+      client.listEPG( function( result ) {
+        assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal("LSTE\n", self.socketStub.args[0][0]);
+        done();
+        });
+
+    });
   });
 });
 
