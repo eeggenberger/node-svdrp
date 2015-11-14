@@ -18,7 +18,8 @@ I'm planning to support all the SVDRP functions that come with VDR and those
 that come with the Epgsearch plug-in. Also, there will be a plug-in system,
 so it will be possible to add support for other VDR plug-ins. I'm also 
 planning to write a REST service with some kind of EPG caching that can
-be used in web apps or with other languages than JavaScript.
+be used in web apps or with other languages than JavaScript, but that will
+probably be a separae project.
 
 ## Why Node.js
 
