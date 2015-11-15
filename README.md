@@ -5,7 +5,7 @@ SVDRP Client Library for Node.js
 
 ## Purpose
 
-Provide an easy way to access your Linux VDRs functions over the SVDRP
+Provide an easy way to access your Linux VDR's functions over the SVDRP
 protocol using Node.js.
 
 ## Status
