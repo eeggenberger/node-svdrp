@@ -217,16 +217,19 @@ describe('svdrpclient base functions', function() {
   });
 
   describe('listEPG', function () {
+    
+    var emptyEpg = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Sun Nov 15 11:07:40 2015; UTF-8\n" +
+      "215-C C-1-1051-11100 Das Erste HD\n" +
+      "215-c\n" +
+      "215 End of EPG data\n" +
+      "221 krserver closing connection\n";
+
     it('should call LSTE without parameter and return an EPG struct', function ( done ) {
       var self = this;
 
       rawResponse = fs.readFileSync("test/data/epg_data1.txt");
-      //console.log( rawResponse.toString('utf8') );
-
       var jsonData = fs.readFileSync("test/data/epg_result1.json");
-      //console.log( jsonData.toString('utf8') );
       var response = JSON.parse(jsonData);
-      //console.log( response );
 
       var client = new svdrpclient.svdrpclient();
       client.listEPG( function( result ) {
@@ -237,6 +240,72 @@ describe('svdrpclient base functions', function() {
         });
 
     });
+
+    it('should call LSTE with now as parameter if passed now as param', function ( done ) {
+      var self = this;
+
+      rawResponse = emptyEpg;
+
+      var client = new svdrpclient.svdrpclient();
+      client.listEPG( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal("LSTE now\n", self.socketStub.args[0][0]);
+        done();
+        }, null, 'now');
+    });
+
+    it('should call LSTE with next as parameter if passed next as param', function ( done ) {
+      var self = this;
+
+      rawResponse = emptyEpg;
+
+      var client = new svdrpclient.svdrpclient();
+      client.listEPG( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal("LSTE next\n", self.socketStub.args[0][0]);
+        done();
+        }, null, 'next');
+    });
+
+    it('should call LSTE with "at <timestamp>" as parameter if passed an integer', function ( done ) {
+      var self = this;
+
+      rawResponse = emptyEpg;
+
+      var client = new svdrpclient.svdrpclient();
+      client.listEPG( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal("LSTE at 1447578900\n", self.socketStub.args[0][0]);
+        done();
+        }, null, 1447578900);
+    });
+
+    it('should call LSTE with a channel as parameter if one is passed', function ( done ) {
+      var self = this;
+
+      rawResponse = emptyEpg;
+
+      var client = new svdrpclient.svdrpclient();
+      client.listEPG( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal("LSTE 2\n", self.socketStub.args[0][0]);
+        done();
+        }, 2 );
+    });
+
+    it('should call LSTE with "channel at <timestamp>" as parameters if passed a channel and an integer', function ( done ) {
+      var self = this;
+
+      rawResponse = emptyEpg;
+
+      var client = new svdrpclient.svdrpclient();
+      client.listEPG( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal("LSTE 2 at 1447578900\n", self.socketStub.args[0][0]);
+        done();
+        }, 2, 1447578900);
+    });
+
   });
 });
 
