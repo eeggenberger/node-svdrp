@@ -307,5 +307,79 @@ describe('svdrpclient base functions', function() {
     });
 
   });
+
+  describe('listChannels', function () { });
+  //describe('modifyChannel', function () { }); //low prio
+  //describe('moveChannel', function () { }); //low prio
+  //describe('newChannel', function () { }); //low prio
+  //describe('deleteChannel', function () { }); //low prio
+
+  describe('newTimer', function () {
+    it('should call NEWT with the timer data it got as parameter and return the result');
+  });
+  describe('deleteTimer', function () {
+    it('should call DELT with the timer id that was passed as param and return the result');
+  });
+  describe('modifyTimer', function () { 
+    it('should call MODT with the timer id and data it got as parameter and return the result');
+    it('should call MODT with the timer id and the on|off flag it got as parameter and return the result');
+  });
+  describe('udpateTimer', function () {
+    it('should call UPDT with the timer data it got as parameter and return the result');
+  });
+  describe('moveTimer', function () {
+    it('should call MOVT with the timer id and position it was passed and return the result');
+  });
+
+  describe('scanEPG', function () {
+    it('should call SCAN and return the status');
+  });
+  //describe('putEPGData', function () { }); //low prio
+  
+
+  describe('screengrab', function () {
+    it('should call GRAB and return base64 encoded image data');
+  });
+  describe('displayMessage', function () { 
+    it('should call MESG with the message as parameter and return status code 250');
+  });
+  describe('changeRemote', function () { 
+    it('should call REMO without parameter and return the current remote status');
+    it('should call REMO with on as parameter and return status code 250');
+    it('should call REMO with off as parameter and return status code 250');
+  });
+
+  describe('switchChannel', function () {
+    it('should call CHAN with the parameter that it was passed and return the current channel');
+  });
+  describe('hitKey', function () {
+    it('should call HITK and return a list of supported keys when called without parameter');
+    it('should call HITK with the key that was passed as param and return the result');
+  });
+  describe('changeVolume', function () {
+    it('should call VOLU and return the current volume when called without parameter');
+    it('should call VOLU with the parameter it was passed and return the new volume');
+  });
+
+  describe('diskStats', function () { 
+    it('should call STAT disk and return the disk statistics');
+  });
+  describe('updateRecordings', function () {
+    it('should call UPDR and return the status');
+  });
+  describe('listRecordings', function () {
+    it('should call LSTR and return all recordings when called without param');
+    it('should call LSTR with the recording id it was passed as param');
+  });
+  describe('deleteRecording', function () {
+    it('should call DELR with the recording id it was passed and return the result');
+  });
+  //describe('playRecording', function () { }); // low prio
+  //describe('copyRecording', function () { }); // low prio
+  //describe('startEdit', function () { }); // low prio
+
+  describe('runCommand', function() {
+    it('should not allow commands with newlines, and return the "raw" result data');
+  });
 });
 

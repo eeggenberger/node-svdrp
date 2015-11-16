@@ -11,7 +11,8 @@ protocol using Node.js.
 ## Status
 
 Early alpha. Only a few of all the SVDRP functions have been implemented
-and tested.
+and tested. Run `npm test` to see which functions already have been
+implemented.
 
 ## Plans
 I'm planning to support all the SVDRP functions that come with VDR and those
