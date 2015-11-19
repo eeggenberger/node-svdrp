@@ -347,9 +347,25 @@ describe('svdrpclient base functions', function() {
         }, timerData );
     });
   });
+
   describe('deleteTimer', function () {
-    it('should call DELT with the timer id that was passed as param and return the result');
+    it('should call DELT with the timer id that was passed as param and return the result', function ( done ) {
+      var self = this;
+
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 08:01:56 2015; UTF-8\n" +
+        "250 Timer \"3\" deleted\n";
+      var timerId = '3';
+
+      var client = new svdrpclient.svdrpclient();
+      client.deleteTimer( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal("DELT " + timerId + "\n", self.socketStub.args[0][0]);
+        assert.equal( result.code, '250' );
+        done();
+        }, timerId );
+    });
   });
+
   describe('modifyTimer', function () { 
     it('should call MODT with the timer id and data it got as parameter and return the result');
     it('should call MODT with the timer id and the on|off flag it got as parameter and return the result');
