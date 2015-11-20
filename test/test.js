@@ -324,12 +324,8 @@ describe('svdrpclient base functions', function() {
       rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
         "250 3 " + rawTimerData + "\n";
       var timerData = {
-          status : 1,
-          channel : 22,
-          day : '2015-11-19',
-          start : 2230,
-          stop : 2320,
-          priority : 50,
+          status : 1, channel : 22, day : '2015-11-19', start : 2230,
+          stop : 2320, priority : 50,
           lifetime : 99,
           filename : 'NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.19-22|35-Don',
           extinfo : '<node-svdrp>test</node-svdrp>'
@@ -377,14 +373,8 @@ describe('svdrpclient base functions', function() {
       rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
         "250 " + timerId + " " + rawTimerData + "\n";
       var timerData = {
-          status : 1,
-          id : timerId,
-          channel : 22,
-          day : '2015-11-19',
-          start : 2230,
-          stop : 2320,
-          priority : 50,
-          lifetime : 99,
+          status : 1, id : timerId, channel : 22, day : '2015-11-19',
+          start : 2230, stop : 2320, priority : 50, lifetime : 99,
           filename : 'NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.19-22|35-Don',
           extinfo : '<node-svdrp>test</node-svdrp>'
         };
@@ -409,14 +399,8 @@ describe('svdrpclient base functions', function() {
       rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
         "250 " + timerId + " " + rawTimerData + "\n";
       var timerData = {
-          status : 0,
-          id : timerId,
-          channel : 22,
-          day : '2015-11-19',
-          start : 2230,
-          stop : 2320,
-          priority : 50,
-          lifetime : 99,
+          status : 0, id : timerId, channel : 22, day : '2015-11-19',
+          start : 2230, stop : 2320, priority : 50, lifetime : 99,
           filename : 'NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.19-22|35-Don',
           extinfo : '<node-svdrp>test</node-svdrp>'
         };
@@ -433,8 +417,33 @@ describe('svdrpclient base functions', function() {
         }, timerId, timerParam );
     });
   });
-  describe('udpateTimer', function () {
-    it('should call UPDT with the timer data it got as parameter and return the result');
+  describe('updateTimer', function () {
+    it('should call UPDT with the timer data it got as parameter and return the result', function ( done ) {
+      var self = this;
+
+      //TODO test with colon in the filename param
+      var rawTimerData = '1:22:2015-11-19:2230:2320:50:99:NEO MAGAZIN ROYALE mit ' +
+        'Jan Böhmermann~2015.11.19-22|35-Don:<node-svdrp>test</node-svdrp>';
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
+        "250 3 " + rawTimerData + "\n";
+      var timerData = {
+          status : 1, channel : 22, day : '2015-11-19', start : 2230,
+          stop : 2320, priority : 50, lifetime : 99,
+          filename : 'NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.19-22|35-Don',
+          extinfo : '<node-svdrp>test</node-svdrp>'
+        };
+
+      var client = new svdrpclient.svdrpclient();
+      client.updateTimer( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal("UPDT " + rawTimerData + "\n", self.socketStub.args[0][0]);
+        assert.equal( result.code, '250' );
+        var newTimer = result.data[0];
+        timerData.id = newTimer.id;
+        assert.deepEqual( newTimer, timerData );
+        done();
+        }, timerData );
+    });
   });
   describe('moveTimer', function () {
     it('should call MOVT with the timer id and position it was passed and return the result');
