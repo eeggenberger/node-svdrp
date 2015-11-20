@@ -450,7 +450,20 @@ describe('svdrpclient base functions', function() {
   });
 
   describe('scanEPG', function () {
-    it('should call SCAN and return the status');
+    it('should call SCAN and return the status', function ( done ) {
+      var self = this;
+
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
+        "250 EPG scan triggered\n";
+
+      var client = new svdrpclient.svdrpclient();
+      client.scanEPG( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal("SCAN\n", self.socketStub.args[0][0]);
+        assert.equal( result.code, '250' );
+        done();
+        } );
+    });
   });
   //describe('putEPGData', function () { }); //low prio
   
