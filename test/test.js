@@ -484,8 +484,39 @@ describe('svdrpclient base functions', function() {
     it('should call CHAN with the parameter that it was passed and return the current channel');
   });
   describe('hitKey', function () {
-    it('should call HITK and return a list of supported keys when called without parameter');
-    it('should call HITK with the key that was passed as param and return the result');
+    it('should call HITK and return a list of supported keys when called without parameter', function ( done ) {
+      var self = this;
+
+      rawResponse = fs.readFileSync("test/data/hitk_data1.txt");
+      var jsonData = fs.readFileSync("test/data/hitk_result1.json");
+      var response = JSON.parse(jsonData);
+
+      var client = new svdrpclient.svdrpclient();
+      client.hitKey( function( result ) {
+        assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal("HITK\n", self.socketStub.args[0][0]);
+        done();
+        });
+
+    });
+    it('should call HITK with the key that was passed as param and return the result', function ( done ) {
+      var self = this;
+
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
+        "250 Key \"1\" accepted\n";
+      var key = 1;
+
+      var client = new svdrpclient.svdrpclient();
+      client.hitKey( function( result ) {
+        //assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal("HITK " + key + "\n", self.socketStub.args[0][0]);
+        assert.equal( result.code, '250' );
+        done();
+        }, key);
+
+    });
   });
   describe('changeVolume', function () {
     it('should call VOLU and return the current volume when called without parameter');
