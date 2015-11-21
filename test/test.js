@@ -44,9 +44,9 @@ describe('svdrpclient base functions', function() {
       var client = new svdrpclient.svdrpclient();
       client.nextTimer( function( result ) {
         //assert.deepEqual( result, response );
-        assert.strictEqual( result.data.time.toJSON(), response.data.time.toJSON()   );
+        assert.strictEqual( response.data.time.toJSON(), result.data.time.toJSON() );
         assert( self.socketStub.calledOnce );
-        assert.equal("NEXT \n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "NEXT \n");
         done();
         });
 
@@ -61,10 +61,10 @@ describe('svdrpclient base functions', function() {
 
       var client = new svdrpclient.svdrpclient();
       client.nextTimer( function( result ) {
-        assert.deepEqual( result, response );
+        assert.deepEqual( response, result );
         assert( parseInt( result.data.time ) > 0 );
         assert( self.socketStub.calledOnce );
-        assert.equal("NEXT rel\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "NEXT rel\n");
         done();
         },'rel');
 
@@ -80,10 +80,10 @@ describe('svdrpclient base functions', function() {
 
       var client = new svdrpclient.svdrpclient();
       client.nextTimer( function( result ) {
-        assert.deepEqual( result, response );
+        assert.deepEqual( response, result );
         assert( parseInt( result.data.time ) > 0 );
         assert( self.socketStub.calledOnce );
-        assert.equal("NEXT abs\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "NEXT abs\n");
         done();
         },'abs');
 
@@ -137,9 +137,9 @@ describe('svdrpclient base functions', function() {
 
       var client = new svdrpclient.svdrpclient();
       client.listTimers( function( result ) {
-        assert.deepEqual( result, response );
+        assert.deepEqual( response, result );
         assert( self.socketStub.calledOnce );
-        assert.equal("LSTT\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "LSTT\n");
         done();
         });
 
@@ -173,9 +173,9 @@ describe('svdrpclient base functions', function() {
 
       var client = new svdrpclient.svdrpclient();
       client.listTimers( function( result ) {
-        assert.deepEqual( result, response );
+        assert.deepEqual( response, result );
         assert( self.socketStub.calledOnce );
-        assert.equal("LSTT 1\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "LSTT 1\n");
         done();
         }, 1);
     });
@@ -208,9 +208,9 @@ describe('svdrpclient base functions', function() {
 
       var client = new svdrpclient.svdrpclient();
       client.listTimers( function( result ) {
-        assert.deepEqual( result, response );
+        assert.deepEqual( response, result );
         assert( self.socketStub.calledOnce );
-        assert.equal("LSTT\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "LSTT\n");
         done();
         }, 'abc');
     });
@@ -233,9 +233,9 @@ describe('svdrpclient base functions', function() {
 
       var client = new svdrpclient.svdrpclient();
       client.listEPG( function( result ) {
-        assert.deepEqual( result, response );
+        assert.deepEqual( response, result );
         assert( self.socketStub.calledOnce );
-        assert.equal("LSTE\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "LSTE\n");
         done();
         });
 
@@ -249,7 +249,7 @@ describe('svdrpclient base functions', function() {
       var client = new svdrpclient.svdrpclient();
       client.listEPG( function( result ) {
         assert( self.socketStub.calledOnce );
-        assert.equal("LSTE now\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "LSTE now\n");
         done();
         }, null, 'now');
     });
@@ -262,7 +262,7 @@ describe('svdrpclient base functions', function() {
       var client = new svdrpclient.svdrpclient();
       client.listEPG( function( result ) {
         assert( self.socketStub.calledOnce );
-        assert.equal("LSTE next\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "LSTE next\n");
         done();
         }, null, 'next');
     });
@@ -275,7 +275,7 @@ describe('svdrpclient base functions', function() {
       var client = new svdrpclient.svdrpclient();
       client.listEPG( function( result ) {
         assert( self.socketStub.calledOnce );
-        assert.equal("LSTE at 1447578900\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "LSTE at 1447578900\n");
         done();
         }, null, 1447578900);
     });
@@ -288,7 +288,7 @@ describe('svdrpclient base functions', function() {
       var client = new svdrpclient.svdrpclient();
       client.listEPG( function( result ) {
         assert( self.socketStub.calledOnce );
-        assert.equal("LSTE 2\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "LSTE 2\n");
         done();
         }, 2 );
     });
@@ -301,7 +301,7 @@ describe('svdrpclient base functions', function() {
       var client = new svdrpclient.svdrpclient();
       client.listEPG( function( result ) {
         assert( self.socketStub.calledOnce );
-        assert.equal("LSTE 2 at 1447578900\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "LSTE 2 at 1447578900\n");
         done();
         }, 2, 1447578900);
     });
@@ -334,7 +334,7 @@ describe('svdrpclient base functions', function() {
       var client = new svdrpclient.svdrpclient();
       client.newTimer( function( result ) {
         assert( self.socketStub.calledOnce );
-        assert.equal("NEWT " + rawTimerData + "\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "NEWT " + rawTimerData + "\n");
         assert.equal( result.code, '250' );
         var newTimer = result.data[0];
         timerData.id = newTimer.id;
@@ -355,7 +355,7 @@ describe('svdrpclient base functions', function() {
       var client = new svdrpclient.svdrpclient();
       client.deleteTimer( function( result ) {
         assert( self.socketStub.calledOnce );
-        assert.equal("DELT " + timerId + "\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "DELT " + timerId + "\n");
         assert.equal( result.code, '250' );
         done();
         }, timerId );
@@ -382,7 +382,7 @@ describe('svdrpclient base functions', function() {
       var client = new svdrpclient.svdrpclient();
       client.modifyTimer( function( result ) {
         assert( self.socketStub.calledOnce );
-        assert.equal("MODT " + timerId + ' ' + rawTimerData + "\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "MODT " + timerId + ' ' + rawTimerData + "\n");
         assert.equal( result.code, '250' );
         var newTimer = result.data[0];
         assert.deepEqual( newTimer, timerData );
@@ -409,7 +409,7 @@ describe('svdrpclient base functions', function() {
       var client = new svdrpclient.svdrpclient();
       client.modifyTimer( function( result ) {
         assert( self.socketStub.calledOnce );
-        assert.equal("MODT " + timerId + ' ' + timerParam + "\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "MODT " + timerId + ' ' + timerParam + "\n");
         assert.equal( result.code, '250' );
         var newTimer = result.data[0];
         assert.deepEqual( newTimer, timerData );
@@ -436,7 +436,7 @@ describe('svdrpclient base functions', function() {
       var client = new svdrpclient.svdrpclient();
       client.updateTimer( function( result ) {
         assert( self.socketStub.calledOnce );
-        assert.equal("UPDT " + rawTimerData + "\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "UPDT " + rawTimerData + "\n");
         assert.equal( result.code, '250' );
         var newTimer = result.data[0];
         timerData.id = newTimer.id;
@@ -459,7 +459,7 @@ describe('svdrpclient base functions', function() {
       var client = new svdrpclient.svdrpclient();
       client.scanEPG( function( result ) {
         assert( self.socketStub.calledOnce );
-        assert.equal("SCAN\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "SCAN\n");
         assert.equal( result.code, '250' );
         done();
         } );
@@ -493,9 +493,9 @@ describe('svdrpclient base functions', function() {
 
       var client = new svdrpclient.svdrpclient();
       client.hitKey( function( result ) {
-        assert.deepEqual( result, response );
+        assert.deepEqual( response, result );
         assert( self.socketStub.calledOnce );
-        assert.equal("HITK\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "HITK\n");
         done();
         });
 
@@ -511,7 +511,7 @@ describe('svdrpclient base functions', function() {
       client.hitKey( function( result ) {
         //assert.deepEqual( result, response );
         assert( self.socketStub.calledOnce );
-        assert.equal("HITK " + key + "\n", self.socketStub.args[0][0]);
+        assert.equal(self.socketStub.args[0][0], "HITK " + key + "\n");
         assert.equal( result.code, '250' );
         done();
         }, key);
