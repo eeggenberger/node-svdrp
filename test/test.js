@@ -519,8 +519,59 @@ describe('svdrpclient base functions', function() {
     });
   });
   describe('changeVolume', function () {
-    it('should call VOLU and return the current volume when called without parameter');
-    it('should call VOLU with the parameter it was passed and return the new volume');
+    it('should call VOLU and return the current volume when called without parameter', function ( done ) {
+      var self = this;
+
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
+        "250 Audio volume is 255\n";
+
+      var client = new svdrpclient.svdrpclient();
+      client.changeVolume( function( result ) {
+        //assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "VOLU\n");
+        assert.equal( result.code, '250' );
+        assert.equal( result.data, 255 );
+        done();
+        });
+
+    });
+    it('should call VOLU with the parameter it was passed and return the new volume', function ( done ) {
+      var self = this;
+
+      var volume = 50;
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
+        "250 Audio volume is " + volume + "\n";
+
+      var client = new svdrpclient.svdrpclient();
+      client.changeVolume( function( result ) {
+        //assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "VOLU " + volume + "\n");
+        assert.equal( result.code, '250' );
+        assert.equal( result.data, volume );
+        done();
+        }, volume);
+
+    });
+    it('should return "mute" as data when called with mute as parameter', function ( done ) {
+      var self = this;
+
+      var volume = 'mute';
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
+        "250 Audio is mute\n";
+
+      var client = new svdrpclient.svdrpclient();
+      client.changeVolume( function( result ) {
+        //assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "VOLU " + volume + "\n");
+        assert.equal( result.code, '250' );
+        assert.equal( result.data, volume );
+        done();
+        }, volume);
+
+    });
   });
 
   describe('diskStats', function () { 
