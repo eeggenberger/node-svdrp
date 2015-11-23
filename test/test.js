@@ -481,7 +481,27 @@ describe('svdrpclient base functions', function() {
   });
 
   describe('switchChannel', function () {
-    it('should call CHAN with the parameter that it was passed and return the current channel');
+    it('should call CHAN with the parameter that it was passed and return the current channel', function ( done ) {
+      var self = this;
+
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
+        "250 5 3sat\n";
+      var response = {
+        number : 5,
+        name : '3sat'
+        };
+
+      var client = new svdrpclient.svdrpclient();
+      client.switchChannel( function( result ) {
+        //assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "CHAN " + response.number + "\n");
+        assert.equal( result.code, '250' );
+        assert.deepEqual( result.data, response );
+        done();
+        }, response.number );
+
+    });
   });
   describe('hitKey', function () {
     it('should call HITK and return a list of supported keys when called without parameter', function ( done ) {
