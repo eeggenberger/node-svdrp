@@ -38,7 +38,7 @@ describe('svdrpclient base functions', function() {
       var self = this;
       rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Tue Nov 10 22:38:02 2015; UTF-8\r\n" +
         "250 1 Thu Nov 12 22:25:00 2015\r\n" +
-        "221 krserver closing connection\r\n"
+        "221 krserver closing connection\r\n";
       var response = { code: '250', data: { timer: '1', time: new Date('2015-11-12T22:25:00') } };
 
       var client = new svdrpclient.svdrpclient();
@@ -56,7 +56,7 @@ describe('svdrpclient base functions', function() {
       var self = this;
       rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Tue Nov 10 22:38:02 2015; UTF-8\r\n" +
         "250 1 171412\r\n" +
-        "221 krserver closing connection\r\n"
+        "221 krserver closing connection\r\n";
       var response = { code: '250', data: { timer: '1', time: '171412' } };
 
       var client = new svdrpclient.svdrpclient();
@@ -75,7 +75,7 @@ describe('svdrpclient base functions', function() {
 
       rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Tue Nov 10 22:38:02 2015; UTF-8\r\n" +
         "250 1 1447363500\r\n" +
-        "221 krserver closing connection\r\n"
+        "221 krserver closing connection\r\n";
       var response = { code: '250', data: { timer: '1', time: '1447363500' } };
 
       var client = new svdrpclient.svdrpclient();
