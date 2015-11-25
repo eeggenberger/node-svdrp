@@ -233,7 +233,7 @@ describe('svdrpclient base functions', function() {
 
       var client = new svdrpclient.svdrpclient();
       client.listEPG( function( result ) {
-        assert.deepEqual( response, result );
+        assert.deepEqual( result, response );
         assert( self.socketStub.calledOnce );
         assert.equal(self.socketStub.args[0][0], "LSTE\n");
         done();
@@ -468,9 +468,10 @@ describe('svdrpclient base functions', function() {
   //describe('putEPGData', function () { }); //low prio
   
 
-  describe('screengrab', function () {
-    it('should call GRAB and return base64 encoded image data');
-  });
+  // low prio, as I don't have a working vdr fronted to test it at the moment
+  //describe('screengrab', function () {
+  //  it('should call GRAB and return base64 encoded image data');
+  //});
   describe('displayMessage', function () { 
     it('should call MESG with the message as parameter and return status code 250');
   });
@@ -513,7 +514,7 @@ describe('svdrpclient base functions', function() {
 
       var client = new svdrpclient.svdrpclient();
       client.hitKey( function( result ) {
-        assert.deepEqual( response, result );
+        assert.deepEqual( result, response );
         assert( self.socketStub.calledOnce );
         assert.equal(self.socketStub.args[0][0], "HITK\n");
         done();
@@ -601,8 +602,38 @@ describe('svdrpclient base functions', function() {
     it('should call UPDR and return the status');
   });
   describe('listRecordings', function () {
-    it('should call LSTR and return all recordings when called without param');
-    it('should call LSTR with the recording id it was passed as param');
+    it('should call LSTR and return all recordings when called without param', function ( done ) {
+      var self = this;
+
+      rawResponse = fs.readFileSync("test/data/lstr_data1.txt");
+      var jsonData = fs.readFileSync("test/data/lstr_result1.txt");
+      var response = JSON.parse(jsonData);
+
+      var client = new svdrpclient.svdrpclient();
+      client.listRecordings( function( result ) {
+        assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "LSTR\n");
+        done();
+        });
+
+    });
+    it('should call LSTR with the recording id it was passed as param', function ( done ) {
+      var self = this;
+
+      rawResponse = fs.readFileSync("test/data/lstr_data2.txt");
+      var jsonData = fs.readFileSync("test/data/lstr_result2.json");
+      var response = JSON.parse(jsonData);
+
+      var client = new svdrpclient.svdrpclient();
+      client.listRecordings( function( result ) {
+        assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "LSTR 1\n");
+        done();
+        }, 1);
+
+    });
   });
   describe('deleteRecording', function () {
     it('should call DELR with the recording id it was passed and return the result');

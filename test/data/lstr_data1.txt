@@ -1,0 +1,4 @@
+220 krserver SVDRP VideoDiskRecorder 2.2.0; Mon Nov 23 20:16:10 2015; UTF-8
+250-1 18.08.15 21:35 1:35* Mammon - Per Anhalter durch das Geldsystem
+250-2 22.10.15 22:25 0:50* NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.10.22-22:30-Don
+250 3 29.10.15 22:25 0:50 NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.10.29-22:30-Don

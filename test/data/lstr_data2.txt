@@ -1,0 +1,25 @@
+220 krserver SVDRP VideoDiskRecorder 2.2.0; Tue Nov 24 22:40:08 2015; UTF-8
+215-C C-61441-10014-11120 arte HD
+215-E 24331 1439927100 5100 4E C
+215-T Mammon - Per Anhalter durch das Geldsystem
+215-S Dokumentarfilm Deutschland 2014
+215-D "Wo ist mein Geld?" - die Frage, die sich sicher jeder schon einmal gestellt hat, ist Ausgangspunkt für die Reise von Filmemacher Philipp Enders durch die Finanzwelt. Geleitet von einer mobilen App landet er bei der Suche nach seinem verlorenen Geld nicht nur bei der Europäischen Zentralbank (EZB) und an der Börse, sondern auch in einer spanischen Bauruine. Seine Recherchen legen ein System von Abhängigkeiten frei und die Erkenntnis, dass die Krise des Finanzsystems auch eine Chance auf Veränderung birgt. "Mammon" erzählt mit einem Augenzwinkern von den Mechanismen, die hinter dem "schnöden Mammon" stecken.|Produziert in HD
+215-G 70 81
+215-X 5 0B deu HD-Video
+215-X 2 03 deu deutsch
+215-X 2 48 mis franz. oder Audiodeskription
+215-X 2 03 fra französisch
+215-X 4 44 mul Originalton in Dolby Digital
+215-X 3 20 deu DVB-Untertitel
+215-X 3 20 fra DVB Sous-Titre
+215-X 3 10 deu DVB-Untertitel OmU
+215-X 2 05 fra 
+215-X 2 05 mis 
+215-X 3 03 deu 
+215-X 3 03 fra 
+215-V 1439927400
+215-F 50
+215-P 99
+215-L 99
+215-@ <epgsearch><eventid>24331</eventid><update>0</update><bstart>600</bstart><bstop>600</bstop></epgsearch>
+215 End of recording information

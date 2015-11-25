@@ -1,0 +1,36 @@
+{
+  "code" : "250",
+  "data" : [
+    {
+      "type" : "recording",
+      "id" : 1,
+      "date" : 1439926500,
+      "duration" : 95,
+      "new" : true,
+      "title" : "Mammon - Per Anhalter durch das Geldsystem"
+    },
+    {
+      "type" : "folder",
+      "title" : "NEO MAGAZIN ROYALE mit Jan Böhmermann",
+      "new" : true,
+      "recordings" : [
+        {
+          "type" : "recording",
+          "id" : 2,
+          "date" : 1445545500,
+          "duration" : 50,
+          "new" : true,
+          "title" : "2015.10.22-22:30-Don"
+        },
+        {
+          "type" : "recording",
+          "id" : 3,
+          "date" : 1446153900,
+          "duration" : 50,
+          "new" : false,
+          "title" : "2015.10.29-22:30-Don"
+        }
+      ]
+    }
+  ]
+}

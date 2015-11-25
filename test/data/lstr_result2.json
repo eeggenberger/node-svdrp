@@ -1,0 +1,16 @@
+{ 
+  "code" : "215",
+  "data" : {
+    "channelId" : "C-61441-10014-11120",
+    "channelName" : "arte HD",
+    "eventId" : 24331,
+    "start" : 1439927100,
+    "duration" : 5100,
+    "tableId" : "4E",
+    "version" : "C",
+    "title" : "Mammon - Per Anhalter durch das Geldsystem",
+    "shortdesc" : "Dokumentarfilm Deutschland 2014",
+    "description" : "\"Wo ist mein Geld?\" - die Frage, die sich sicher jeder schon einmal gestellt hat, ist Ausgangspunkt für die Reise von Filmemacher Philipp Enders durch die Finanzwelt. Geleitet von einer mobilen App landet er bei der Suche nach seinem verlorenen Geld nicht nur bei der Europäischen Zentralbank (EZB) und an der Börse, sondern auch in einer spanischen Bauruine. Seine Recherchen legen ein System von Abhängigkeiten frei und die Erkenntnis, dass die Krise des Finanzsystems auch eine Chance auf Veränderung birgt. \"Mammon\" erzählt mit einem Augenzwinkern von den Mechanismen, die hinter dem \"schnöden Mammon\" stecken.|Produziert in HD",
+    "vps" : 1439927400
+  }
+}
