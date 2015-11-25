@@ -596,8 +596,29 @@ describe('svdrpclient base functions', function() {
   });
 
   describe('diskStats', function () { 
-    it('should call STAT disk and return the disk statistics');
+    it('should call STAT disk and return the disk statistics', function ( done ) {
+      var self = this;
+
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 08:00:09 2015; UTF-8\n" + 
+        "250 246507MB 93330MB 62%\n";
+      var responseData = {
+        total : 246507,
+        free  : 93330,
+        percent : 62
+      };
+
+      var client = new svdrpclient.svdrpclient();
+      client.diskStats( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "STAT disk\n");
+        assert.equal( result.code, '250' );
+        assert.deepEqual( result.data, responseData );
+        done();
+        });
+
+    });
   });
+
   describe('updateRecordings', function () {
     it('should call UPDR and return the status', function ( done ) {
       var self = this;
