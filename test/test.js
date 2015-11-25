@@ -445,9 +445,10 @@ describe('svdrpclient base functions', function() {
         }, timerData );
     });
   });
-  describe('moveTimer', function () {
-    it('should call MOVT with the timer id and position it was passed and return the result');
-  });
+  // low prio, my VDR doesn't seem to know it
+  //describe('moveTimer', function () {
+  //  it('should call MOVT with the timer id and position it was passed and return the result');
+  //});
 
   describe('scanEPG', function () {
     it('should call SCAN and return the status', function ( done ) {
@@ -473,7 +474,21 @@ describe('svdrpclient base functions', function() {
   //  it('should call GRAB and return base64 encoded image data');
   //});
   describe('displayMessage', function () { 
-    it('should call MESG with the message as parameter and return status code 250');
+    it('should call MESG with the message as parameter and return status code 250', function ( done ) {
+      var self = this;
+
+      var message = 'Foo Bar';
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 22:16:10 2015; UTF-8\n" +
+        "250 Message queued\n";
+
+      var client = new svdrpclient.svdrpclient();
+      client.displayMessage( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "MESG " + message + "\n");
+        assert.equal( result.code, '250' );
+        done();
+        }, message );
+    });
   });
   describe('changeRemote', function () { 
     it('should call REMO without parameter and return the current remote status');
