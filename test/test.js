@@ -635,8 +635,24 @@ describe('svdrpclient base functions', function() {
 
     });
   });
+
   describe('deleteRecording', function () {
-    it('should call DELR with the recording id it was passed and return the result');
+    it('should call DELR with the recording id it was passed and return the result', function ( done ) {
+      var self = this;
+
+      var recordingId = 44;
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 07:46:32 2015; UTF-8\n" +
+        "250 Recording \"" + recordingId + "\" deleted\n";
+
+      var client = new svdrpclient.svdrpclient();
+      client.deleteRecording( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "DELR " + recordingId + "\n");
+        assert.equal( result.code, '250' );
+        done();
+        }, recordingId);
+
+    });
   });
   //describe('playRecording', function () { }); // low prio
   //describe('copyRecording', function () { }); // low prio
