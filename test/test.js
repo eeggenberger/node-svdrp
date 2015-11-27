@@ -736,7 +736,23 @@ describe('svdrpclient base functions', function() {
   //describe('startEdit', function () { }); // low prio
 
   describe('runCommand', function() {
-    it('should not allow commands with newlines, and return the "raw" result data');
+    it('should not allow commands with newlines, and return the "raw" result data', function ( done ) {
+      var self = this;
+
+      rawResponse = fs.readFileSync("test/data/lstr_data1.txt");
+      var jsonData = fs.readFileSync("test/data/lstr_result1_raw.json");
+      var response = JSON.parse(jsonData);
+      var command = "LSTR\nDELR 1\n";
+
+      var client = new svdrpclient.svdrpclient();
+      client.runCommand( command, {}, function( result ) {
+        assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "LSTR\n");
+        done();
+        });
+
+    });
   });
 });
 
