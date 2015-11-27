@@ -491,9 +491,36 @@ describe('svdrpclient base functions', function() {
     });
   });
   describe('changeRemote', function () { 
-    it('should call REMO without parameter and return the current remote status');
-    it('should call REMO with on as parameter and return status code 250');
-    it('should call REMO with off as parameter and return status code 250');
+    it('should call REMO without parameter and return the current remote status', function ( done ) {
+      var self = this;
+
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 22:16:10 2015; UTF-8\n" +
+        "250 Remote control is enabled\n";
+
+      var client = new svdrpclient.svdrpclient();
+      client.changeRemote( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "REMO\n");
+        assert.equal( result.code, '250' );
+        assert.equal( result.data, true );
+        done();
+        } );
+    });
+    it('should call REMO with off as parameter and return status code 250', function ( done ) {
+      var self = this;
+
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 22:16:10 2015; UTF-8\n" +
+        "250 Remote control is disabled\n";
+
+      var client = new svdrpclient.svdrpclient();
+      client.changeRemote( function( result ) {
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "REMO off\n");
+        assert.equal( result.code, '250' );
+        assert.equal( result.data, false );
+        done();
+        }, 'off' );
+    });
   });
 
   describe('switchChannel', function () {
