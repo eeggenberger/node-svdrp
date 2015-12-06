@@ -13,14 +13,20 @@ describe('svdrpclient base functions', function() {
     var self = this;
     rawResponse = '';
 
-    var socket = new net.Socket({});
-    self.socketStub = sinon.stub(socket, 'write', function ( data ) {
-      this.emit('data', rawResponse);
+    self.socket = new net.Socket({});
+    self.socketStub = sinon.stub(self.socket, 'write', function ( data ) {
+      if( rawResponse.constructor === Array ) {
+        for( var i = 0; i < rawResponse.length; i++ ) {
+          this.emit('data', rawResponse[i]);
+        }
+      } else {
+        this.emit('data', rawResponse);
+      }
     });
     
-    var stub = sinon.stub(net, "connect");
-    stub.returns( socket );
-    stub.callsArgAsync( 2 );
+    self.netStub = sinon.stub(net, "connect");
+    self.netStub.returns( self.socket );
+    self.netStub.callsArgAsync( 2 );
 
     done();
   });
@@ -753,6 +759,115 @@ describe('svdrpclient base functions', function() {
         });
 
     });
+
+    it('should work when receiving the response in several chunks', function ( done ) {
+      var self = this;
+
+      rawResponse = [];
+      var responseString = fs.readFileSync("test/data/lstr_data1.txt").toString('utf8');
+      var chunks = 4;
+      var chunkLength = parseInt( responseString.length / chunks ) + 1;
+      for( var i = 0; i < chunks; i++ ) {
+        rawResponse.push( responseString.substr( i * chunkLength, chunkLength ) );
+      }
+      var jsonData = fs.readFileSync("test/data/lstr_result1_raw.json");
+      var response = JSON.parse(jsonData);
+      var command = "LSTR";
+
+      var client = new svdrpclient.svdrpclient();
+      client.runCommand( command, {}, function( result ) {
+        assert.deepEqual( result, response );
+        assert( self.socketStub.calledOnce );
+        assert.equal(self.socketStub.args[0][0], "LSTR\n");
+        done();
+        });
+
+    });
+
+    it('should use the passed options for the connection', function(done) {
+      var self = this;
+
+      var recordingId = 44;
+      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 07:46:32 2015; UTF-8\n" +
+        "250 Recording \"" + recordingId + "\" deleted\n";
+
+      var timeoutStub = sinon.stub(self.socket, 'setTimeout');
+
+      var options = { host : 'some.host.com', port : 1234, timeout: 5000 };
+      var client = new svdrpclient.svdrpclient( options );
+      client.deleteRecording( function( result ) {
+        assert.equal(self.netStub.args[0][0], options.port );
+        assert.equal(self.netStub.args[0][1], options.host );
+        assert.equal(timeoutStub.args[0][0], options.timeout );
+        assert( self.netStub.calledOnce );
+        assert( timeoutStub.calledOnce );
+        done();
+        }, recordingId);
+    });
   });
 });
 
+describe('svdrpclient base function failures', function() {
+  describe('runCommand', function() {
+    it('should return error code 901 when unable to connect', function ( done ) {
+      var self = this;
+
+      var socket = new net.Socket({});
+      self.socketStub = sinon.stub(socket, 'write', function ( data ) {
+        //do nothing as we're not connected
+      });
+
+      // seems like this needs to be emitted asynchronously
+      setTimeout( function() {
+        socket.emit('error', { 
+          //[Error: connect ECONNREFUSED]
+          code: 'ECONNREFUSED',
+          errno: 'ECONNREFUSED',
+          syscall: 'connect' });
+
+      }, 0);
+
+      
+      var stub = sinon.stub(net, "connect");
+      stub.returns( socket );
+
+      var command = "CHAN 1";
+
+      var client = new svdrpclient.svdrpclient();
+      client.runCommand( command, {}, function( result ) {
+        assert.equal( result.code, "901" );
+        done();
+        });
+
+      net.connect.restore();
+    });
+    it('should return error code 902 when unable to connect within the timeout set', function( done ) {
+      var self = this;
+      var timeout = 100;
+      var options = { timeout : timeout };
+      this.timeout( timeout + 200 );
+
+      var socket = new net.Socket({});
+      self.socketStub = sinon.stub(socket, 'write', function ( data ) {
+        //do nothing as we're not connected
+      });
+
+      // seems like this needs to be emitted asynchronously
+      setTimeout( function() {
+        socket.emit('timeout');
+      }, timeout);
+
+      
+      var stub = sinon.stub(net, "connect");
+      stub.returns( socket );
+
+      var command = "CHAN 1";
+      var client = new svdrpclient.svdrpclient();
+      client.runCommand( command, {}, function( result ) {
+        assert.equal( result.code, "902" );
+        done();
+        });
+    });
+    it('should return error code 903 when not receiving a complete response within the timeout set');
+  });
+});

@@ -1,11 +1,30 @@
 {
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "mocha": "^2.3.3",
     "sinon": "^1.17.2"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
-  }
+  },
+  "name": "node-svrdp",
+  "description": "node-svrdp ==========",
+  "version": "0.1.0",
+  "main": "lib/svdrpclient.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eeggenberger/node-svrdp.git"
+  },
+  "keywords": [
+    "vdr"
+  ],
+  "author": "Erwin Eggenberger <npm@keyboardrocker.com> (http://keyboardrocker.com)",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/eeggenberger/node-svrdp/issues"
+  },
+  "homepage": "https://github.com/eeggenberger/node-svrdp#readme"
 }
