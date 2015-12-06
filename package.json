@@ -7,7 +7,7 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
   },
-  "name": "node-svrdp",
+  "name": "node-svdrp",
   "description": "node-svrdp ==========",
   "version": "0.1.0",
   "main": "lib/svdrpclient.js",
