@@ -793,12 +793,12 @@ describe('svdrpclient base functions', function() {
 
       var timeoutStub = sinon.stub(self.socket, 'setTimeout');
 
-      var options = { host : 'some.host.com', port : 1234, timeout: 5000 };
+      var options = { host : 'some.host.com', port : 1234, connectionTimeout: 5000 };
       var client = new svdrpclient.svdrpclient( options );
       client.deleteRecording( function( result ) {
         assert.equal(self.netStub.args[0][0], options.port );
         assert.equal(self.netStub.args[0][1], options.host );
-        assert.equal(timeoutStub.args[0][0], options.timeout );
+        assert.equal(timeoutStub.args[0][0], options.connectionTimeout );
         assert( self.netStub.calledOnce );
         assert( timeoutStub.calledOnce );
         done();
@@ -844,8 +844,9 @@ describe('svdrpclient base function failures', function() {
     it('should return error code 902 when unable to connect within the timeout set', function( done ) {
       var self = this;
       var timeout = 100;
-      var options = { timeout : timeout };
-      this.timeout( timeout + 200 );
+      var options = { connectionTimeout : timeout };
+      this.timeout( timeout + 100 );
+      this.slow( timeout + 200 );
 
       var socket = new net.Socket({});
       self.socketStub = sinon.stub(socket, 'write', function ( data ) {
@@ -867,7 +868,48 @@ describe('svdrpclient base function failures', function() {
         assert.equal( result.code, "902" );
         done();
         });
+      net.connect.restore();
     });
-    it('should return error code 903 when not receiving a complete response within the timeout set');
+    it('should return error code 903 when not receiving a complete response within the timeout set', function ( done ) {
+      var self = this;
+      var timeout = 100;
+      var options = { responseTimeout : timeout };
+      this.timeout( timeout + 100 );
+      this.slow( timeout + 200 );
+
+      self.socket = new net.Socket({});
+      self.socketStub = sinon.stub(self.socket, 'write', function ( data ) {
+        if( rawResponse.constructor === Array ) {
+          for( var i = 0; i < rawResponse.length; i++ ) {
+            this.emit('data', rawResponse[i]);
+          }
+        } else {
+          this.emit('data', rawResponse);
+        }
+      });
+      
+      self.netStub = sinon.stub(net, "connect");
+      self.netStub.returns( self.socket );
+      self.netStub.callsArgAsync( 2 );
+
+      rawResponse = [];
+      var responseString = fs.readFileSync("test/data/lstr_data1_incomplete.txt").toString('utf8');
+      var chunks = 4;
+      var chunkLength = parseInt( responseString.length / chunks ) + 1;
+      for( var i = 0; i < chunks; i++ ) {
+        rawResponse.push( responseString.substr( i * chunkLength, chunkLength ) );
+      }
+      var jsonData = fs.readFileSync("test/data/lstr_result1_raw.json");
+      var response = JSON.parse(jsonData);
+      var command = "LSTR";
+
+      var client = new svdrpclient.svdrpclient(options);
+      client.runCommand( command, {}, function( result ) {
+        assert.equal( result.code, "903" );
+        done();
+        });
+
+      net.connect.restore();
+    });
   });
 });
