@@ -1,4 +1,3 @@
-220 krserver SVDRP VideoDiskRecorder 2.2.0; Sat Nov 14 21:57:03 2015; UTF-8
 215-C C-1-1051-28724 arte
 215-E 27292 1447531500 3600 4E 1C
 215-T Nachbarschaftsgeschichten: Paris / Berlin

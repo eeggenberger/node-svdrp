@@ -1,4 +1,3 @@
-220 krserver SVDRP VideoDiskRecorder 2.2.0; Tue Nov 24 22:40:08 2015; UTF-8
 215-C C-61441-10014-11120 arte HD
 215-E 24331 1439927100 5100 4E C
 215-T Mammon - Per Anhalter durch das Geldsystem

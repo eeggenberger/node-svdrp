@@ -5,6 +5,8 @@ var svdrpclient = require('../lib/svdrpclient.js');
 var EventEmitter = require('events').EventEmitter;
 var fs = require("fs");
 
+var vdrBanner = '220 krserver SVDRP VideoDiskRecorder 2.2.0; Tue Nov 10 22:38:02 2015; UTF-8\r\n';
+
 describe('svdrpclient base functions', function() {
 
   var rawResponse;
@@ -24,9 +26,12 @@ describe('svdrpclient base functions', function() {
       }
     });
     
-    self.netStub = sinon.stub(net, "connect");
-    self.netStub.returns( self.socket );
-    self.netStub.callsArgAsync( 2 );
+    self.netStub = sinon.stub(net, "connect", function( port, host, cb ) {
+
+      setTimeout( cb, 0 );
+      setTimeout( function() { self.socket.emit('data', vdrBanner); }, 0 );
+      return self.socket;
+    });
 
     done();
   });
@@ -42,8 +47,7 @@ describe('svdrpclient base functions', function() {
 
     it('should return a timer id and a date object when called without option', function ( done ) {
       var self = this;
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Tue Nov 10 22:38:02 2015; UTF-8\r\n" +
-        "250 1 Thu Nov 12 22:25:00 2015\r\n" +
+      rawResponse = "250 1 Thu Nov 12 22:25:00 2015\r\n" +
         "221 krserver closing connection\r\n";
       var response = { code: '250', data: { timer: '1', time: new Date('2015-11-12T22:25:00') } };
 
@@ -60,8 +64,7 @@ describe('svdrpclient base functions', function() {
 
     it('should return a timer id and a integer when called with rel as option', function ( done ) {
       var self = this;
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Tue Nov 10 22:38:02 2015; UTF-8\r\n" +
-        "250 1 171412\r\n" +
+      rawResponse = "250 1 171412\r\n" +
         "221 krserver closing connection\r\n";
       var response = { code: '250', data: { timer: '1', time: '171412' } };
 
@@ -79,8 +82,7 @@ describe('svdrpclient base functions', function() {
     it('should return a timer id and a timestamp integer when called with abs as option', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Tue Nov 10 22:38:02 2015; UTF-8\r\n" +
-        "250 1 1447363500\r\n" +
+      rawResponse = "250 1 1447363500\r\n" +
         "221 krserver closing connection\r\n";
       var response = { code: '250', data: { timer: '1', time: '1447363500' } };
 
@@ -101,8 +103,7 @@ describe('svdrpclient base functions', function() {
     it('should call LSTT without parameter and return a timer struct', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 11 23:12:52 2015; UTF-8\r\n" +
-        "250-1 1:22:2015-11-12:2225:2315:50:99:NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.12-22|30-Don:" +
+      rawResponse = "250-1 1:22:2015-11-12:2225:2315:50:99:NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.12-22|30-Don:" +
         "<epgsearch><channel>22 - zdf_neo</channel><searchtimer>neo magazin</searchtimer><start>1447363500" + 
         "</start><stop>1447366500</stop><s-id>13</s-id><eventid>3411</eventid></epgsearch>\r\n" +
         "250 2 0:11:2015-11-13:2012:2126:50:99:Castle~Todesfall in der Familie," + 
@@ -154,8 +155,7 @@ describe('svdrpclient base functions', function() {
     it('should call LSTT with a timer id when passed an integer', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 11 23:12:52 2015; UTF-8\r\n" +
-        "250 1 1:22:2015-11-12:2225:2315:50:99:NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.12-22|30-Don:" +
+      rawResponse = "250 1 1:22:2015-11-12:2225:2315:50:99:NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.12-22|30-Don:" +
         "<epgsearch><channel>22 - zdf_neo</channel><searchtimer>neo magazin</searchtimer><start>1447363500" + 
         "</start><stop>1447366500</stop><s-id>13</s-id><eventid>3411</eventid></epgsearch>\r\n" +
         "221 krserver closing connection\r\n";
@@ -189,8 +189,7 @@ describe('svdrpclient base functions', function() {
     it('should call LSTT withthout a timer id when passed anything other than an integer', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 11 23:12:52 2015; UTF-8\r\n" +
-        "250 1 1:22:2015-11-12:2225:2315:50:99:NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.12-22|30-Don:" +
+      rawResponse = "250 1 1:22:2015-11-12:2225:2315:50:99:NEO MAGAZIN ROYALE mit Jan Böhmermann~2015.11.12-22|30-Don:" +
         "<epgsearch><channel>22 - zdf_neo</channel><searchtimer>neo magazin</searchtimer><start>1447363500" + 
         "</start><stop>1447366500</stop><s-id>13</s-id><eventid>3411</eventid></epgsearch>\r\n" +
         "221 krserver closing connection\r\n";
@@ -224,8 +223,7 @@ describe('svdrpclient base functions', function() {
 
   describe('listEPG', function () {
     
-    var emptyEpg = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Sun Nov 15 11:07:40 2015; UTF-8\n" +
-      "215-C C-1-1051-11100 Das Erste HD\n" +
+    var emptyEpg = "215-C C-1-1051-11100 Das Erste HD\n" +
       "215-c\n" +
       "215 End of EPG data\n" +
       "221 krserver closing connection\n";
@@ -327,8 +325,7 @@ describe('svdrpclient base functions', function() {
       //TODO test with colon in the filename param
       var rawTimerData = '1:22:2015-11-19:2230:2320:50:99:NEO MAGAZIN ROYALE mit ' +
         'Jan Böhmermann~2015.11.19-22|35-Don:<node-svdrp>test</node-svdrp>';
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
-        "250 3 " + rawTimerData + "\n";
+      rawResponse = "250 3 " + rawTimerData + "\n";
       var timerData = {
           status : 1, channel : 22, day : '2015-11-19', start : 2230,
           stop : 2320, priority : 50,
@@ -354,8 +351,7 @@ describe('svdrpclient base functions', function() {
     it('should call DELT with the timer id that was passed as param and return the result', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 08:01:56 2015; UTF-8\n" +
-        "250 Timer \"3\" deleted\n";
+      rawResponse = "250 Timer \"3\" deleted\n";
       var timerId = '3';
 
       var client = new svdrpclient.svdrpclient();
@@ -376,8 +372,7 @@ describe('svdrpclient base functions', function() {
       var rawTimerData = '1:22:2015-11-19:2230:2320:50:99:NEO MAGAZIN ROYALE mit ' +
         'Jan Böhmermann~2015.11.19-22|35-Don:<node-svdrp>test</node-svdrp>';
       var timerId = 3;
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
-        "250 " + timerId + " " + rawTimerData + "\n";
+      rawResponse = "250 " + timerId + " " + rawTimerData + "\n";
       var timerData = {
           status : 1, id : timerId, channel : 22, day : '2015-11-19',
           start : 2230, stop : 2320, priority : 50, lifetime : 99,
@@ -402,8 +397,7 @@ describe('svdrpclient base functions', function() {
       var rawTimerData = '0:22:2015-11-19:2230:2320:50:99:NEO MAGAZIN ROYALE mit ' +
         'Jan Böhmermann~2015.11.19-22|35-Don:<node-svdrp>test</node-svdrp>';
       var timerId = 3;
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
-        "250 " + timerId + " " + rawTimerData + "\n";
+      rawResponse = "250 " + timerId + " " + rawTimerData + "\n";
       var timerData = {
           status : 0, id : timerId, channel : 22, day : '2015-11-19',
           start : 2230, stop : 2320, priority : 50, lifetime : 99,
@@ -430,8 +424,7 @@ describe('svdrpclient base functions', function() {
       //TODO test with colon in the filename param
       var rawTimerData = '1:22:2015-11-19:2230:2320:50:99:NEO MAGAZIN ROYALE mit ' +
         'Jan Böhmermann~2015.11.19-22|35-Don:<node-svdrp>test</node-svdrp>';
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
-        "250 3 " + rawTimerData + "\n";
+      rawResponse = "250 3 " + rawTimerData + "\n";
       var timerData = {
           status : 1, channel : 22, day : '2015-11-19', start : 2230,
           stop : 2320, priority : 50, lifetime : 99,
@@ -460,8 +453,7 @@ describe('svdrpclient base functions', function() {
     it('should call SCAN and return the status', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
-        "250 EPG scan triggered\n";
+      rawResponse = "250 EPG scan triggered\n";
 
       var client = new svdrpclient.svdrpclient();
       client.scanEPG( function( result ) {
@@ -484,8 +476,7 @@ describe('svdrpclient base functions', function() {
       var self = this;
 
       var message = 'Foo Bar';
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 22:16:10 2015; UTF-8\n" +
-        "250 Message queued\n";
+      rawResponse = "250 Message queued\n";
 
       var client = new svdrpclient.svdrpclient();
       client.displayMessage( function( result ) {
@@ -500,8 +491,7 @@ describe('svdrpclient base functions', function() {
     it('should call REMO without parameter and return the current remote status', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 22:16:10 2015; UTF-8\n" +
-        "250 Remote control is enabled\n";
+      rawResponse = "250 Remote control is enabled\n";
 
       var client = new svdrpclient.svdrpclient();
       client.changeRemote( function( result ) {
@@ -515,8 +505,7 @@ describe('svdrpclient base functions', function() {
     it('should call REMO with off as parameter and return status code 250', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 22:16:10 2015; UTF-8\n" +
-        "250 Remote control is disabled\n";
+      rawResponse = "250 Remote control is disabled\n";
 
       var client = new svdrpclient.svdrpclient();
       client.changeRemote( function( result ) {
@@ -533,8 +522,7 @@ describe('svdrpclient base functions', function() {
     it('should call CHAN with the parameter that it was passed and return the current channel', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
-        "250 5 3sat\n";
+      rawResponse = "250 5 3sat\n";
       var response = {
         number : 5,
         name : '3sat'
@@ -572,8 +560,7 @@ describe('svdrpclient base functions', function() {
     it('should call HITK with the key that was passed as param and return the result', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
-        "250 Key \"1\" accepted\n";
+      rawResponse = "250 Key \"1\" accepted\n";
       var key = 1;
 
       var client = new svdrpclient.svdrpclient();
@@ -591,8 +578,7 @@ describe('svdrpclient base functions', function() {
     it('should call VOLU and return the current volume when called without parameter', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
-        "250 Audio volume is 255\n";
+      rawResponse = "250 Audio volume is 255\n";
 
       var client = new svdrpclient.svdrpclient();
       client.changeVolume( function( result ) {
@@ -609,8 +595,7 @@ describe('svdrpclient base functions', function() {
       var self = this;
 
       var volume = 50;
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
-        "250 Audio volume is " + volume + "\n";
+      rawResponse = "250 Audio volume is " + volume + "\n";
 
       var client = new svdrpclient.svdrpclient();
       client.changeVolume( function( result ) {
@@ -627,8 +612,7 @@ describe('svdrpclient base functions', function() {
       var self = this;
 
       var volume = 'mute';
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Thu Nov 19 07:41:00 2015; UTF-8\n" +
-        "250 Audio is mute\n";
+      rawResponse = "250 Audio is mute\n";
 
       var client = new svdrpclient.svdrpclient();
       client.changeVolume( function( result ) {
@@ -647,8 +631,7 @@ describe('svdrpclient base functions', function() {
     it('should call STAT disk and return the disk statistics', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 08:00:09 2015; UTF-8\n" + 
-        "250 246507MB 93330MB 62%\n";
+      rawResponse = "250 246507MB 93330MB 62%\n";
       var responseData = {
         total : 246507,
         free  : 93330,
@@ -671,8 +654,7 @@ describe('svdrpclient base functions', function() {
     it('should call UPDR and return the status', function ( done ) {
       var self = this;
 
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 07:52:43 2015; UTF-8\n" +
-        "250 Re-read of recordings directory triggered\n";
+      rawResponse = "250 Re-read of recordings directory triggered\n";
 
       var client = new svdrpclient.svdrpclient();
       client.updateRecordings( function( result ) {
@@ -724,8 +706,7 @@ describe('svdrpclient base functions', function() {
       var self = this;
 
       var recordingId = 44;
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 07:46:32 2015; UTF-8\n" +
-        "250 Recording \"" + recordingId + "\" deleted\n";
+      rawResponse = "250 Recording \"" + recordingId + "\" deleted\n";
 
       var client = new svdrpclient.svdrpclient();
       client.deleteRecording( function( result ) {
@@ -788,8 +769,7 @@ describe('svdrpclient base functions', function() {
       var self = this;
 
       var recordingId = 44;
-      rawResponse = "220 krserver SVDRP VideoDiskRecorder 2.2.0; Wed Nov 25 07:46:32 2015; UTF-8\n" +
-        "250 Recording \"" + recordingId + "\" deleted\n";
+      rawResponse = "250 Recording \"" + recordingId + "\" deleted\n";
 
       var timeoutStub = sinon.stub(self.socket, 'setTimeout');
 
